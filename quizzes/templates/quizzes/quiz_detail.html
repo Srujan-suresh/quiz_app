@@ -1,0 +1,161 @@
+{% load custom_filters %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ quiz.name }}</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        .quiz-container {
+            max-width: 800px;
+            margin: 50px auto;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px 30px;
+        }
+
+        .quiz-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: #4a90e2;
+        }
+
+        .quiz-description {
+            text-align: center;
+            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+
+        .question-block {
+            margin-bottom: 25px;
+        }
+
+        .question-text {
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            font-size: 1rem;
+        }
+
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        .submit-button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+        }
+
+        .submit-button:hover {
+            background-color: #357abd;
+        }
+
+        /* Timer style */
+        .timer {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #ff6347;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <h1 class="quiz-title">{{ quiz.name }}</h1>
+        <p class="quiz-description">{{ quiz.description }}</p>
+
+        <!-- Timer display -->
+        <div class="timer">
+            Time Remaining: <span id="timer">{{ quiz_duration }} seconds</span>
+        </div>
+
+        <form method="post" class="quiz-form">
+            {% csrf_token %}
+            {% for question in questions %}
+                <div class="question-block">
+                    <p class="question-text">
+                        <strong>{{ forloop.counter }}.</strong> {{ question.question_text }}
+                    </p>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="question_{{ question.id }}" value="A">
+                            {{ question.option_a }}
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="question_{{ question.id }}" value="B">
+                            {{ question.option_b }}
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="question_{{ question.id }}" value="C">
+                            {{ question.option_c }}
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="question_{{ question.id }}" value="D">
+                            {{ question.option_d }}
+                        </label>
+                    </div>
+                </div>
+            {% endfor %}
+
+            <button type="submit" class="submit-button">Submit Quiz</button>
+        </form>
+    </div>
+
+    <script type="text/javascript">
+        // Timer logic
+        var quizDurationInSeconds = parseInt("{{ quiz_duration }}", 10);  // Get quiz duration (passed from the view)
+        var timerElement = document.getElementById('timer');  // Get the timer element
+
+        function startTimer() {
+            var timeLeft = quizDurationInSeconds;  // Initialize time left
+
+            // Set interval to decrease the timer every second
+            var timerInterval = setInterval(function() {
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);  // Stop the timer when time is up
+                    alert('Time is up! Submitting the quiz...');
+                    document.querySelector('form').submit();  // Automatically submit the quiz form
+                } else {
+                    timerElement.textContent = timeLeft + " seconds";  // Update the timer display
+                    timeLeft--;  // Decrease the time left by 1 second
+                }
+            }, 1000);  // 1000ms = 1 second
+        }
+
+        // Start the timer when the page loads
+        window.onload = startTimer;
+    </script>
+</body>
+</html>

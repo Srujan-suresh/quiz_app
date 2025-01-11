@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>{{ quiz.name }}</h1>
+<p>{{ quiz.description }}</p>
+<form method="post" action="">
+    {% csrf_token %}
+    <div class="mb-3">
+        {% for question in questions %}
+            <fieldset>
+                <legend>{{ forloop.counter }}. {{ question.text }}</legend>
+                <div>
+                    <input type="radio" name="question_{{ question.id }}" value="A" id="q{{ question.id }}a">
+                    <label for="q{{ question.id }}a">{{ question.option_1 }}</label>
+                </div>
+                <div>
+                    <input type="radio" name="question_{{ question.id }}" value="B" id="q{{ question.id }}b">
+                    <label for="q{{ question.id }}b">{{ question.option_2 }}</label>
+                </div>
+                <div>
+                    <input type="radio" name="question_{{ question.id }}" value="C" id="q{{ question.id }}c">
+                    <label for="q{{ question.id }}c">{{ question.option_3 }}</label>
+                </div>
+                <div>
+                    <input type="radio" name="question_{{ question.id }}" value="D" id="q{{ question.id }}d">
+                    <label for="q{{ question.id }}d">{{ question.option_4 }}</label>
+                </div>
+            </fieldset>
+        {% endfor %}
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+{% endblock %}

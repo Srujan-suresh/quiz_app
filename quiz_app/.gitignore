@@ -1,0 +1,25 @@
+# Python files
+*.pyc
+*.pyo
+__pycache__/
+
+# Virtual environment
+env/
+venv/
+
+# Django stuff
+db.sqlite3
+*.log
+
+# Heroku-specific
+staticfiles/
+
+# IDE and Editor-specific
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# OS files
+.DS_Store
+Thumbs.db
