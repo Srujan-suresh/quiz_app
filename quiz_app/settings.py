@@ -31,7 +31,7 @@ SECRET_KEY = 'django-insecure-p04#$0v)gt__8*t(6-0p%qk&8018jy^_q+0ah9w0yl0nivakfo
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost','*']
 
 LOGIN_URL = '/accounts/login/'  # Default login page
 LOGIN_REDIRECT_URL = '/'       # Redirect after login (home page)
